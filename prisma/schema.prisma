@@ -2,17 +2,35 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+    provider        = "prisma-client-js"
+    previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = "file:./db.sqlite"
-    // url      = env("DATABASE_URL")
+    provider             = "mysql"
+    url                  = env("DATABASE_URL")
+    referentialIntegrity = "prisma"
 }
 
-model Example {
-    id String @id @default(cuid())
+model Book {
+    id              String   @id @default(cuid())
+    userId          String
+    categoryId      String
+    name            String   @unique
+    numberOfVolumes Int
+    isSingleVolume  Boolean
+    isCompleted     Boolean
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @default(now())
+
+    user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+    id    String @id @default(cuid())
+    name  String @unique
+    books Book[]
 }
 
 // Necessary for Next auth
@@ -50,6 +68,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    books         Book[]
 }
 
 model VerificationToken {

@@ -1,8 +1,7 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import { useSession } from 'next-auth/react';
-import { Header } from '../components/Header';
-import { Sidebar } from '../components/Sidebar';
+import { Layout } from '../components/Layout';
 import { SignIn } from '../components/SignIn';
 import { getAuthSession } from '../server/common/getAuthSession';
 
@@ -14,16 +13,11 @@ const Home: NextPage = () => {
   }
 
   return (
-    <Flex direction="column" h="100vh">
-      <Header />
-
-      <Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
-        <Sidebar />
-        <Text colorScheme="whiteAlpha">
-          Select a category on the sidebar to check the collection or you can{' '}
-        </Text>
-      </Flex>
-    </Flex>
+    <Layout>
+      <Text colorScheme="whiteAlpha">
+        Select a category on the sidebar to check the collection or you can{' '}
+      </Text>
+    </Layout>
   );
 };
 

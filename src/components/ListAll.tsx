@@ -12,11 +12,23 @@ import {
   Tr,
   Text,
   Input,
+  Image as ChakraImage,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { RiAddLine, RiPencilLine, RiSearchLine } from 'react-icons/ri';
+import { trpc } from '../utils/trpc';
 import { Layout } from './Layout';
+import LoadingSVG from '../assets/images/loader.svg';
+import Image from 'next/image';
 
 export const ListAll = () => {
+  const { data: session } = useSession();
+
+  const { data, isLoading } = trpc.useQuery([
+    'book.getAll',
+    { userId: session?.user?.id || '' },
+  ]);
+
   return (
     <Layout>
       <Box flex="1" borderRadius={8} bg="gray.800" p="8">
@@ -55,99 +67,117 @@ export const ListAll = () => {
             fontSize="sm"
             colorScheme="pink"
             leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+            _hover={{
+              cursor: 'pointer',
+            }}
           >
             Add new
           </Button>
         </Flex>
 
-        <Table colorScheme="whiteAlpha">
-          <Thead>
-            <Tr>
-              <Th>Name</Th>
-              <Th w="8">Category</Th>
-              <Th w="8">Volumes</Th>
-              <Th w="8">Completed</Th>
-              <Th></Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr bg="gray.900">
-              <Td>
-                <Text>My Hero Academia</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>Manga</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>32</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>No</Text>
-              </Td>
-              <Td textAlign="right">
-                <Button
-                  as="a"
-                  size="sm"
-                  fontSize="sm"
-                  colorScheme="purple"
-                  leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                >
-                  Edit
-                </Button>
-              </Td>
-            </Tr>
-            <Tr>
-              <Td>
-                <Text>Monster</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>Manga</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>09</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>Yes</Text>
-              </Td>
-              <Td textAlign="right">
-                <Button
-                  as="a"
-                  size="sm"
-                  fontSize="sm"
-                  colorScheme="purple"
-                  leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                >
-                  Edit
-                </Button>
-              </Td>
-            </Tr>
-            <Tr bg="gray.900">
-              <Td>
-                <Text>The Boys</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>Comic</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>12</Text>
-              </Td>
-              <Td textAlign="center">
-                <Text>Yes</Text>
-              </Td>
-              <Td textAlign="right">
-                <Button
-                  as="a"
-                  size="sm"
-                  fontSize="sm"
-                  colorScheme="purple"
-                  leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                >
-                  Edit
-                </Button>
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+        {isLoading ? (
+          <Flex justify="center" align="center" pt="10">
+            <ChakraImage as={Image} src={LoadingSVG} alt="Triangle loader" />
+          </Flex>
+        ) : (
+          <Table colorScheme="whiteAlpha">
+            <Thead>
+              <Tr>
+                <Th>Name</Th>
+                <Th w="8">Category</Th>
+                <Th w="8">Volumes</Th>
+                <Th w="8">Completed</Th>
+                <Th></Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr bg="gray.900">
+                <Td>
+                  <Text>My Hero Academia</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>Manga</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>32</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>No</Text>
+                </Td>
+                <Td textAlign="right">
+                  <Button
+                    as="a"
+                    size="sm"
+                    fontSize="sm"
+                    colorScheme="purple"
+                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                    _hover={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>
+                  <Text>Monster</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>Manga</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>09</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>Yes</Text>
+                </Td>
+                <Td textAlign="right">
+                  <Button
+                    as="a"
+                    size="sm"
+                    fontSize="sm"
+                    colorScheme="purple"
+                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                    _hover={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr bg="gray.900">
+                <Td>
+                  <Text>The Boys</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>Comic</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>12</Text>
+                </Td>
+                <Td textAlign="center">
+                  <Text>Yes</Text>
+                </Td>
+                <Td textAlign="right">
+                  <Button
+                    as="a"
+                    size="sm"
+                    fontSize="sm"
+                    colorScheme="purple"
+                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+                    _hover={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Edit
+                  </Button>
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        )}
       </Box>
     </Layout>
   );

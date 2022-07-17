@@ -1,22 +1,28 @@
-import { Text } from '@chakra-ui/react';
+import { Flex, Text } from '@chakra-ui/react';
 import type { GetServerSidePropsContext, NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { Layout } from '../components/Layout';
 import { SignIn } from '../components/SignIn';
 import { getAuthSession } from '../server/common/getAuthSession';
+import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
-  const { data } = useSession();
+  const { data: session } = useSession();
 
-  if (!data) {
+  if (!session || !session.user) {
     return <SignIn />;
   }
 
+  const { data } = trpc.useQuery([
+    'book.getAll',
+    { userId: session.user.id || '' },
+  ]);
+
   return (
     <Layout>
-      <Text colorScheme="whiteAlpha">
-        Select a category on the sidebar to check the collection or you can{' '}
-      </Text>
+      <Flex w="100%">
+        <Text colorScheme="whiteAlpha">{JSON.stringify(data)}</Text>
+      </Flex>
     </Layout>
   );
 };

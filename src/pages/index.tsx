@@ -10,8 +10,6 @@ const Home: NextPage = () => {
     return <SignIn />;
   }
 
-  console.log(data);
-
   return <Header />;
 };
 

@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
+import { Header } from '../components/Header';
 import { SignIn } from '../components/SignIn';
 
 const Home: NextPage = () => {
@@ -9,7 +10,9 @@ const Home: NextPage = () => {
     return <SignIn />;
   }
 
-  return <div>{JSON.stringify(data)}</div>;
+  console.log(data);
+
+  return <Header />;
 };
 
 export default Home;

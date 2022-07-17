@@ -13,6 +13,7 @@ import {
   Text,
   Input,
   Image as ChakraImage,
+  HStack,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { RiAddLine, RiPencilLine, RiSearchLine } from 'react-icons/ri';
@@ -31,7 +32,7 @@ export const ListAll = () => {
 
   return (
     <Layout>
-      <Box flex="1" borderRadius={8} bg="gray.800" p="8">
+      <Box flex="1" borderRadius={8} bg="gray.800" p="8" w="100%">
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="lg" fontWeight="400">
             All books
@@ -83,11 +84,11 @@ export const ListAll = () => {
           <Table colorScheme="whiteAlpha">
             <Thead>
               <Tr>
-                <Th>Name</Th>
+                <Th w="md">Name</Th>
                 <Th w="8">Category</Th>
                 <Th w="8">Volumes</Th>
                 <Th w="8">Completed</Th>
-                <Th></Th>
+                <Th w="8"></Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -98,8 +99,13 @@ export const ListAll = () => {
                 <Td textAlign="center">
                   <Text>Manga</Text>
                 </Td>
-                <Td textAlign="center">
-                  <Text>32</Text>
+                <Td>
+                  <HStack justify="flex-end" spacing="2">
+                    <Text>32</Text>
+                    <Button size="xs" colorScheme="purple">
+                      <Icon as={RiAddLine} fontSize="14" />
+                    </Button>
+                  </HStack>
                 </Td>
                 <Td textAlign="center">
                   <Text>No</Text>
@@ -126,8 +132,13 @@ export const ListAll = () => {
                 <Td textAlign="center">
                   <Text>Manga</Text>
                 </Td>
-                <Td textAlign="center">
-                  <Text>09</Text>
+                <Td>
+                  <HStack justify="flex-end" align="center" spacing="2">
+                    <Text>09</Text>
+                    <Button size="xs" colorScheme="purple">
+                      <Icon as={RiAddLine} fontSize="14" />
+                    </Button>
+                  </HStack>
                 </Td>
                 <Td textAlign="center">
                   <Text>Yes</Text>
@@ -154,8 +165,13 @@ export const ListAll = () => {
                 <Td textAlign="center">
                   <Text>Comic</Text>
                 </Td>
-                <Td textAlign="center">
-                  <Text>12</Text>
+                <Td>
+                  <HStack justify="flex-end" align="center" spacing="2">
+                    <Text>12</Text>
+                    <Button size="xs" colorScheme="purple">
+                      <Icon as={RiAddLine} fontSize="14" />
+                    </Button>
+                  </HStack>
                 </Td>
                 <Td textAlign="center">
                   <Text>Yes</Text>

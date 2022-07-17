@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Box,
   Button,
@@ -10,17 +11,23 @@ import {
   Th,
   Thead,
   Tr,
-  Text,
   Input,
   Image as ChakraImage,
-  HStack,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import { RiAddLine, RiPencilLine, RiSearchLine } from 'react-icons/ri';
+import { RiAddLine, RiSearchLine } from 'react-icons/ri';
 import { trpc } from '../utils/trpc';
 import { Layout } from './Layout';
 import LoadingSVG from '../assets/images/loader.svg';
 import Image from 'next/image';
+import {
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from '@tanstack/react-table';
+import { Book } from '@prisma/client';
+import { columns } from '../utils/table/allBooksColumns';
+import { isEven } from '../utils/isEven';
 
 export const ListAll = () => {
   const { data: session } = useSession();
@@ -29,6 +36,16 @@ export const ListAll = () => {
     'book.getAll',
     { userId: session?.user?.id || '' },
   ]);
+
+  const stableData = React.useMemo(() => data, [data]);
+  const stableColumns = React.useMemo(() => columns, []);
+
+  const table = useReactTable({
+    data: stableData || ([] as Array<Book>),
+    columns: stableColumns,
+    getCoreRowModel: getCoreRowModel(),
+    state: { columnVisibility: { id: false } },
+  });
 
   return (
     <Layout>
@@ -78,119 +95,40 @@ export const ListAll = () => {
 
         {isLoading ? (
           <Flex justify="center" align="center" pt="10">
-            <ChakraImage as={Image} src={LoadingSVG} alt="Triangle loader" />
+            <ChakraImage as={Image} src={LoadingSVG} alt="Loading..." />
           </Flex>
         ) : (
           <Table colorScheme="whiteAlpha">
             <Thead>
-              <Tr>
-                <Th w="md">Name</Th>
-                <Th w="8">Category</Th>
-                <Th w="8">Volumes</Th>
-                <Th w="8">Completed</Th>
-                <Th w="8"></Th>
-              </Tr>
+              {table.getHeaderGroups().map(headerGroup => (
+                <Tr key={headerGroup.id}>
+                  {headerGroup.headers.map((header, index) => (
+                    <Th key={header.id} w={index === 0 ? 'md' : '8'}>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                    </Th>
+                  ))}
+                </Tr>
+              ))}
             </Thead>
             <Tbody>
-              <Tr bg="gray.900">
-                <Td>
-                  <Text>My Hero Academia</Text>
-                </Td>
-                <Td textAlign="center">
-                  <Text>Manga</Text>
-                </Td>
-                <Td>
-                  <HStack justify="flex-end" spacing="2">
-                    <Text>32</Text>
-                    <Button size="xs" colorScheme="purple">
-                      <Icon as={RiAddLine} fontSize="14" />
-                    </Button>
-                  </HStack>
-                </Td>
-                <Td textAlign="center">
-                  <Text>No</Text>
-                </Td>
-                <Td textAlign="right">
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                    _hover={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Edit
-                  </Button>
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  <Text>Monster</Text>
-                </Td>
-                <Td textAlign="center">
-                  <Text>Manga</Text>
-                </Td>
-                <Td>
-                  <HStack justify="flex-end" align="center" spacing="2">
-                    <Text>09</Text>
-                    <Button size="xs" colorScheme="purple">
-                      <Icon as={RiAddLine} fontSize="14" />
-                    </Button>
-                  </HStack>
-                </Td>
-                <Td textAlign="center">
-                  <Text>Yes</Text>
-                </Td>
-                <Td textAlign="right">
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                    _hover={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Edit
-                  </Button>
-                </Td>
-              </Tr>
-              <Tr bg="gray.900">
-                <Td>
-                  <Text>The Boys</Text>
-                </Td>
-                <Td textAlign="center">
-                  <Text>Comic</Text>
-                </Td>
-                <Td>
-                  <HStack justify="flex-end" align="center" spacing="2">
-                    <Text>12</Text>
-                    <Button size="xs" colorScheme="purple">
-                      <Icon as={RiAddLine} fontSize="14" />
-                    </Button>
-                  </HStack>
-                </Td>
-                <Td textAlign="center">
-                  <Text>Yes</Text>
-                </Td>
-                <Td textAlign="right">
-                  <Button
-                    as="a"
-                    size="sm"
-                    fontSize="sm"
-                    colorScheme="purple"
-                    leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
-                    _hover={{
-                      cursor: 'pointer',
-                    }}
-                  >
-                    Edit
-                  </Button>
-                </Td>
-              </Tr>
+              {table.getRowModel().rows.map((row, index) => (
+                <Tr key={row.id} bg={isEven(index) ? 'gray.900' : 'gray.800'}>
+                  {row.getVisibleCells().map((cell, index) => (
+                    <Td
+                      key={cell.id}
+                      textAlign={!isEven(index) ? 'center' : 'left'}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Td>
+                  ))}
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         )}

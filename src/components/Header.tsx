@@ -17,7 +17,7 @@ export const Header = () => {
       align="center"
       justify="space-evenly"
     >
-      <Text fontSize="3xl" fontWeight="700" letterSpacing="tight" w="64">
+      <Text fontSize="2xl" fontWeight="700" letterSpacing="tight" w="64">
         mybookcollection
         <Text as="span" ml="1" color="pink.500">
           .

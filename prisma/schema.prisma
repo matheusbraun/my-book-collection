@@ -2,35 +2,33 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-    provider             = "mysql"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+    provider = "postgres"
+    url      = env("DATABASE_URL")
+}
+
+enum CategoryType {
+    BOOK
+    MANGA
+    MANHWA
+    COMIC
 }
 
 model Book {
-    id              String   @id @default(cuid())
+    id              String       @id @default(cuid())
     userId          String
-    categoryId      String
-    name            String   @unique
+    category        CategoryType
+    name            String       @unique
     numberOfVolumes Int
     isSingleVolume  Boolean
     isCompleted     Boolean
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @default(now())
+    createdAt       DateTime     @default(now())
+    updatedAt       DateTime     @default(now())
 
-    user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-}
-
-model Category {
-    id    String @id @default(cuid())
-    name  String @unique
-    books Book[]
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Necessary for Next auth

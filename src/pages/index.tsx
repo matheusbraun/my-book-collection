@@ -1,9 +1,10 @@
 import { Flex, Text } from '@chakra-ui/react';
-import type { NextPage } from 'next';
+import type { GetServerSidePropsContext, NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import { Header } from '../components/Header';
 import { Sidebar } from '../components/Sidebar';
 import { SignIn } from '../components/SignIn';
+import { getAuthSession } from '../server/common/getAuthSession';
 
 const Home: NextPage = () => {
   const { data } = useSession();
@@ -24,6 +25,14 @@ const Home: NextPage = () => {
       </Flex>
     </Flex>
   );
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  return {
+    props: {
+      session: await getAuthSession(ctx),
+    },
+  };
 };
 
 export default Home;

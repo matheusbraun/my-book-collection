@@ -1,4 +1,5 @@
-import { Box, Stack, Text, Link, Icon } from '@chakra-ui/react';
+import { Box, Stack, Text, Link as ChakraLink, Icon } from '@chakra-ui/react';
+import Link from 'next/link';
 import { RiDashboardLine, RiBookLine } from 'react-icons/ri';
 
 export const Sidebar = () => (
@@ -9,44 +10,37 @@ export const Sidebar = () => (
           CATEGORY
         </Text>
         <Stack spacing="4" mt="8" align="stretch">
-          <Link display="flex" alignItems="center" href="/books" title="Books">
-            <Icon as={RiBookLine} fontSize="20" />
-            <Text ml="4" fontWeight="500">
-              Books
-            </Text>
+          <Link href="/books" title="Books">
+            <ChakraLink display="flex" alignItems="center">
+              <Icon as={RiBookLine} fontSize="20" />
+              <Text ml="4" fontWeight="500">
+                Books
+              </Text>
+            </ChakraLink>
           </Link>
-          <Link
-            display="flex"
-            alignItems="center"
-            href="/mangas"
-            title="Mangas"
-          >
-            <Icon as={RiBookLine} fontSize="20" />
-            <Text ml="4" fontWeight="500">
-              Mangas
-            </Text>
+          <Link href="/mangas" title="Mangas">
+            <ChakraLink display="flex" alignItems="center">
+              <Icon as={RiBookLine} fontSize="20" />
+              <Text ml="4" fontWeight="500">
+                Mangas
+              </Text>
+            </ChakraLink>
           </Link>
-          <Link
-            display="flex"
-            alignItems="center"
-            href="/manhwas"
-            title="Manhwas"
-          >
-            <Icon as={RiBookLine} fontSize="20" />
-            <Text ml="4" fontWeight="500">
-              Manhwas
-            </Text>
+          <Link href="/manhwas" title="Manhwas">
+            <ChakraLink display="flex" alignItems="center">
+              <Icon as={RiBookLine} fontSize="20" />
+              <Text ml="4" fontWeight="500">
+                Manhwas
+              </Text>
+            </ChakraLink>
           </Link>
-          <Link
-            display="flex"
-            alignItems="center"
-            href="/comics"
-            title="Comics"
-          >
-            <Icon as={RiBookLine} fontSize="20" />
-            <Text ml="4" fontWeight="500">
-              Comics
-            </Text>
+          <Link href="/comics" title="Comics">
+            <ChakraLink display="flex" alignItems="center">
+              <Icon as={RiBookLine} fontSize="20" />
+              <Text ml="4" fontWeight="500">
+                Comics
+              </Text>
+            </ChakraLink>
           </Link>
         </Stack>
       </Box>
@@ -55,16 +49,13 @@ export const Sidebar = () => (
           ANALYTICS
         </Text>
         <Stack spacing="4" mt="8" align="stretch">
-          <Link
-            display="flex"
-            alignItems="center"
-            href="/dashboard"
-            title="Dashboard"
-          >
-            <Icon as={RiDashboardLine} fontSize="20" />
-            <Text ml="4" fontWeight="500">
-              Dashboard
-            </Text>
+          <Link href="/dashboard" title="Dashboard">
+            <ChakraLink display="flex" alignItems="center">
+              <Icon as={RiDashboardLine} fontSize="20" />
+              <Text ml="4" fontWeight="500">
+                Dashboard
+              </Text>
+            </ChakraLink>
           </Link>
         </Stack>
       </Box>

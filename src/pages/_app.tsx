@@ -6,17 +6,24 @@ import superjson from 'superjson';
 import { SessionProvider } from 'next-auth/react';
 import { ChakraProvider } from '@chakra-ui/react';
 import { theme } from '../styles/theme';
+import Head from 'next/head';
 
 const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   return (
-    <ChakraProvider theme={theme}>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
-    </ChakraProvider>
+    <>
+      <Head>
+        <title>MyBookCollection</title>
+      </Head>
+
+      <ChakraProvider theme={theme}>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ChakraProvider>
+    </>
   );
 };
 

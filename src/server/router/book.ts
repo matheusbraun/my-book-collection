@@ -31,4 +31,22 @@ export const bookRouter = createRouter()
       });
       return book;
     },
+  })
+  .mutation('updateVolumesById', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const book = await ctx.prisma.book.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          numberOfVolumes: {
+            increment: 1,
+          },
+        },
+      });
+      return book;
+    },
   });

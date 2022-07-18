@@ -38,13 +38,25 @@ import Link from 'next/link';
 export const ListAll = () => {
   const { data: session } = useSession();
 
-  const { data, isLoading } = trpc.useQuery([
+  const { data, isLoading, refetch } = trpc.useQuery([
     'book.getAll',
     { userId: session?.user?.id || '' },
   ]);
 
+  const { mutate, isLoading: isLoadingMutation } = trpc.useMutation(
+    ['book.updateVolumesById'],
+    {
+      onSuccess: async () => {
+        return await refetch();
+      },
+    }
+  );
+
   const stableData = React.useMemo(() => data, [data]);
-  const stableColumns = React.useMemo(() => columns, []);
+  const stableColumns = React.useMemo(
+    () => columns(mutate, isLoadingMutation),
+    [mutate, isLoadingMutation]
+  );
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = React.useState('');

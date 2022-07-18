@@ -9,6 +9,7 @@ export const columns: ColumnDef<Book>[] = [
     header: 'id',
     cell: info => <Text>{info.getValue()}</Text>,
     enableHiding: true,
+    enableSorting: false,
   },
   {
     accessorKey: 'name',

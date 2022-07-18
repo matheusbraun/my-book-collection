@@ -27,6 +27,7 @@ export const bookRouter = createRouter()
           userId: input.userId,
           category: input.category ? input.category : undefined,
         },
+        orderBy: { name: 'asc' },
       });
       return book;
     },

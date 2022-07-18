@@ -44,7 +44,13 @@ export const columns = (mutate: any, isLoading: boolean): ColumnDef<Book>[] => {
               size="xs"
               colorScheme="purple"
               onClick={() => mutate({ id: info.row.getValue('id') })}
-              isDisabled={isLoading}
+              isDisabled={isLoading || Boolean(info.row.getValue('completed'))}
+              _disabled={{
+                opacity: 0.4,
+                _hover: {
+                  cursor: 'default',
+                },
+              }}
             >
               <Icon as={RiAddLine} fontSize="14" />
             </Button>

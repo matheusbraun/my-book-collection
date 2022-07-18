@@ -10,6 +10,8 @@ export const columns: ColumnDef<Book>[] = [
     cell: info => <Text>{info.getValue()}</Text>,
     enableHiding: true,
     enableSorting: false,
+    enableGlobalFilter: false,
+    enableColumnFilter: false,
   },
   {
     accessorKey: 'name',
@@ -21,31 +23,39 @@ export const columns: ColumnDef<Book>[] = [
     header: 'Category',
     cell: info => (
       <Text textTransform="capitalize">
-        {(info.getValue() as String)?.toLowerCase()}
+        {info.getValue() ? String(info.getValue()).toLowerCase() : undefined}
       </Text>
     ),
     id: 'category',
+    enableGlobalFilter: false,
+    enableColumnFilter: false,
   },
   {
     accessorKey: 'numberOfVolumes',
     header: 'Volumes',
-    cell: info => (
-      <HStack justify="flex-end" spacing="2">
-        <Text>{String(info.getValue()).padStart(2, '0')}</Text>
-        <Button
-          size="xs"
-          colorScheme="purple"
-          onClick={() => window.alert(info.row.getValue('id'))}
-        >
-          <Icon as={RiAddLine} fontSize="14" />
-        </Button>
-      </HStack>
-    ),
+    enableGlobalFilter: false,
+    enableColumnFilter: false,
+    cell: info => {
+      return info.getValue() ? (
+        <HStack justify="flex-end" spacing="2">
+          <Text>{String(info.getValue()).padStart(2, '0')}</Text>
+          <Button
+            size="xs"
+            colorScheme="purple"
+            onClick={() => window.alert(info.row.getValue('id'))}
+          >
+            <Icon as={RiAddLine} fontSize="14" />
+          </Button>
+        </HStack>
+      ) : undefined;
+    },
   },
   {
     accessorKey: 'isCompleted',
     header: 'Completed',
     cell: info => (info.getValue() ? <Text>Yes</Text> : <Text>No</Text>),
     id: 'completed',
+    enableGlobalFilter: false,
+    enableColumnFilter: false,
   },
 ];

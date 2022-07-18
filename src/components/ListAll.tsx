@@ -27,10 +27,12 @@ import {
   flexRender,
   type SortingState,
   getSortedRowModel,
+  getFilteredRowModel,
 } from '@tanstack/react-table';
 import { Book } from '@prisma/client';
 import { columns } from '../utils/table/allBooksColumns';
 import { isEven } from '../utils/isEven';
+import { DebounceInput } from 'react-debounce-input';
 
 export const ListAll = () => {
   const { data: session } = useSession();
@@ -44,15 +46,22 @@ export const ListAll = () => {
   const stableColumns = React.useMemo(() => columns, []);
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = React.useState('');
 
   const table = useReactTable({
     data: stableData || ([] as Array<Book>),
     columns: stableColumns,
-    state: { sorting, columnVisibility: { id: false } },
+    state: { sorting, globalFilter, columnVisibility: { id: false } },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
   });
+
+  const setFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('change');
+    setGlobalFilter(e.target.value);
+  };
 
   return (
     <Layout>
@@ -75,7 +84,9 @@ export const ListAll = () => {
             borderRadius="full"
           >
             <Input
+              as={DebounceInput}
               color="gray.50"
+              debounceTimeout={500}
               variant="unstyled"
               px="4"
               mr="4"
@@ -83,6 +94,7 @@ export const ListAll = () => {
               _placeholder={{
                 color: 'gray.400',
               }}
+              onChange={setFilter}
             />
             <Icon as={RiSearchLine} fontSize="20" />
           </Flex>

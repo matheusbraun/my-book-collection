@@ -23,7 +23,6 @@ model Book {
     category        CategoryType
     name            String       @unique
     numberOfVolumes Int
-    isSingleVolume  Boolean
     isCompleted     Boolean
     createdAt       DateTime     @default(now())
     updatedAt       DateTime     @default(now())

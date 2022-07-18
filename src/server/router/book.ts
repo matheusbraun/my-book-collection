@@ -9,7 +9,6 @@ export const bookRouter = createRouter()
       userId: z.string(),
       category: z.nativeEnum(CategoryType),
       numberOfVolumes: z.number().min(1),
-      isSingleVolume: z.boolean(),
       isCompleted: z.boolean(),
     }),
     async resolve({ input, ctx }) {

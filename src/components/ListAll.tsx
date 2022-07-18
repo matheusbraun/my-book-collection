@@ -33,6 +33,7 @@ import { Book } from '@prisma/client';
 import { columns } from '../utils/table/allBooksColumns';
 import { isEven } from '../utils/isEven';
 import { DebounceInput } from 'react-debounce-input';
+import Link from 'next/link';
 
 export const ListAll = () => {
   const { data: session } = useSession();
@@ -98,18 +99,20 @@ export const ListAll = () => {
             />
             <Icon as={RiSearchLine} fontSize="20" />
           </Flex>
-          <Button
-            as="a"
-            size="sm"
-            fontSize="sm"
-            colorScheme="pink"
-            leftIcon={<Icon as={RiAddLine} fontSize="20" />}
-            _hover={{
-              cursor: 'pointer',
-            }}
-          >
-            Add new
-          </Button>
+          <Link href="/create" title="Add new book">
+            <Button
+              as="a"
+              size="sm"
+              fontSize="sm"
+              colorScheme="pink"
+              leftIcon={<Icon as={RiAddLine} fontSize="20" />}
+              _hover={{
+                cursor: 'pointer',
+              }}
+            >
+              Add new
+            </Button>
+          </Link>
         </Flex>
 
         {isLoading ? (

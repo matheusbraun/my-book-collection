@@ -49,4 +49,27 @@ export const bookRouter = createRouter()
       });
       return book;
     },
+  })
+  .mutation('update', {
+    input: z.object({
+      id: z.string(),
+      name: z.string(),
+      category: z.nativeEnum(CategoryType),
+      numberOfVolumes: z.number().min(1),
+      isCompleted: z.boolean(),
+    }),
+    async resolve({ input, ctx }) {
+      const book = await ctx.prisma.book.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          name: input.name,
+          category: input.category,
+          numberOfVolumes: input.numberOfVolumes,
+          isCompleted: input.isCompleted,
+        },
+      });
+      return book;
+    },
   });

@@ -13,6 +13,7 @@ import {
   Tr,
   Input,
   Image as ChakraImage,
+  useToast,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { RiAddLine, RiSearchLine, RiShareLine } from 'react-icons/ri';
@@ -37,6 +38,7 @@ import Link from 'next/link';
 
 export const ListAll = () => {
   const { data: session } = useSession();
+  const toast = useToast();
 
   const { data, isLoading, refetch } = trpc.useQuery([
     'book.getAll',
@@ -76,10 +78,28 @@ export const ListAll = () => {
   };
 
   const onShareClick = () => {
-    if (!process.browser) return;
-    navigator.clipboard.writeText(
-      `${window.location.origin}/share/${session?.user?.id}`
-    );
+    if (!process.browser) {
+      toast({
+        title: 'Clipboard not working',
+        description: "Didn't copy the url. Please try again.",
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+    const url = `${window.location.origin}/share/${session?.user?.id}`;
+
+    navigator.clipboard.writeText(url);
+    toast({
+      title: 'Share url successfuly copied',
+      description: `${url} successfuly copied to your clipboard.`,
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+    });
   };
 
   return (

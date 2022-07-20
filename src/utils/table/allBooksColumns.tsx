@@ -1,7 +1,8 @@
 import { Button, HStack, Icon, Text } from '@chakra-ui/react';
-import { RiAddLine } from 'react-icons/ri';
+import { RiAddLine, RiPencilLine } from 'react-icons/ri';
 import type { Book } from '@prisma/client';
 import type { ColumnDef } from '@tanstack/react-table';
+import Link from 'next/link';
 
 export const columns = (mutate: any, isLoading: boolean): ColumnDef<Book>[] => {
   return [
@@ -65,6 +66,29 @@ export const columns = (mutate: any, isLoading: boolean): ColumnDef<Book>[] => {
       id: 'completed',
       enableGlobalFilter: false,
       enableColumnFilter: false,
+    },
+    {
+      header: '',
+      cell: info => (
+        <Link href={`/edit/${info.row.getValue('id')}`} title="Edit book">
+          <Button
+            as="a"
+            size="sm"
+            fontSize="sm"
+            colorScheme="purple"
+            leftIcon={<Icon as={RiPencilLine} fontSize="16" />}
+            _hover={{
+              cursor: 'pointer',
+            }}
+          >
+            Edit
+          </Button>
+        </Link>
+      ),
+      id: 'edit',
+      enableGlobalFilter: false,
+      enableColumnFilter: false,
+      enableSorting: false,
     },
   ];
 };

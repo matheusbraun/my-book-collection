@@ -72,7 +72,6 @@ export const ListAll = () => {
   });
 
   const setFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('change');
     setGlobalFilter(e.target.value);
   };
 

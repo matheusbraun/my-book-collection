@@ -1,5 +1,6 @@
 import { Flex, Text, Box, Avatar, Icon } from '@chakra-ui/react';
 import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { FaSignOutAlt } from 'react-icons/fa';
 
 export const Header = () => {
@@ -17,12 +18,20 @@ export const Header = () => {
       align="center"
       justify={!session ? 'flex-start' : 'space-between'}
     >
-      <Text fontSize="2xl" fontWeight="700" letterSpacing="tight" w="64">
-        mybookcollection
-        <Text as="span" ml="1" color="pink.500">
-          .
+      <Link href="/" title="Go to Home">
+        <Text
+          fontSize="2xl"
+          fontWeight="700"
+          letterSpacing="tight"
+          w="64"
+          _hover={{ cursor: 'pointer' }}
+        >
+          mybookcollection
+          <Text as="span" ml="1" color="pink.500">
+            .
+          </Text>
         </Text>
-      </Text>
+      </Link>
 
       {session && (
         <Flex align="center" ml="auto">

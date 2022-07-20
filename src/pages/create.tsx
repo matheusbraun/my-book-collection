@@ -38,7 +38,7 @@ const CreateBook = () => {
       name: data.bookName,
       category: data.category as typeof CategoryType[keyof typeof CategoryType],
       numberOfVolumes: Number(data.volumes),
-      isCompleted: data.completed,
+      isCompleted: Boolean(data.completed),
       userId: session?.user?.id || '',
     });
   };

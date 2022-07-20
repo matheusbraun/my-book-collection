@@ -4,14 +4,15 @@ import { Sidebar } from './Sidebar';
 
 type LayoutProps = {
   children: React.ReactNode;
+  userId?: string;
 };
 
-export const Layout = ({ children }: LayoutProps) => (
+export const Layout = ({ children, userId }: LayoutProps) => (
   <Flex direction="column" h="100vh">
     <Header />
 
     <Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
-      <Sidebar />
+      <Sidebar userId={userId} />
       {children}
     </Flex>
   </Flex>

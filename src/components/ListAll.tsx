@@ -107,7 +107,7 @@ export const ListAll = () => {
 
   return (
     <Layout>
-      <Box flex="1" borderRadius={8} bg="gray.800" p="8" w="100%">
+      <Box borderRadius={8} bg="gray.800" p="8" w="100%">
         <Flex mb="8" justify="space-between" align="center">
           <Heading size="lg" fontWeight="400">
             All books
@@ -168,7 +168,7 @@ export const ListAll = () => {
         </Flex>
 
         {isLoading ? (
-          <Flex justify="center" align="center" pt="60">
+          <Flex justify="center" flex="1" align="center" pt="10">
             <ChakraImage as={Image} src={LoadingSVG} alt="Loading..." />
           </Flex>
         ) : (

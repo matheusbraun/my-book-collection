@@ -17,7 +17,7 @@ type SelectProps = {
 
 export const Select = forwardRef(
   ({ name, label, options, ...rest }: SelectProps, ref) => (
-    <FormControl>
+    <FormControl w="auto">
       {Boolean(label) && <FormLabel htmlFor={name}>{label}</FormLabel>}
       <ChakraSelect
         name={name}

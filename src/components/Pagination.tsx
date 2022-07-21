@@ -12,14 +12,20 @@ import {
 
 type PaginationProps = {
   table: Table<Book>;
+  numberOfRows: number;
 };
 
-export const Pagination = ({ table }: PaginationProps) => {
+export const Pagination = ({ table, numberOfRows }: PaginationProps) => {
   const getEntriesInfo = () => {
     const pageSize = table.getState().pagination.pageSize;
-    const firstEntry = pageSize + 1 - pageSize;
-    const lastEntry = pageSize;
-    const totalEntries = table.getPageCount() * pageSize;
+    const currentPage = table.getState().pagination.pageIndex + 1;
+    const pageSizeMinus1 = pageSize - 1;
+    const firstEntry =
+      currentPage === 1 ? 1 : currentPage * pageSize - pageSizeMinus1;
+    const lastEntry = !table.getCanNextPage()
+      ? numberOfRows
+      : currentPage * pageSize;
+    const totalEntries = numberOfRows;
 
     return (
       <>
@@ -32,7 +38,6 @@ export const Pagination = ({ table }: PaginationProps) => {
   return (
     <HStack mt="8" justify="space-between" align="center">
       <HStack>
-        <Text w="10rem">{getEntriesInfo()}</Text>
         <Select
           name="numberOfRows"
           options={[
@@ -49,6 +54,9 @@ export const Pagination = ({ table }: PaginationProps) => {
             table.setPageSize(Number(e.target.value));
           }}
         />
+        <Text w="14rem" ml="1">
+          {getEntriesInfo()}
+        </Text>
       </HStack>
       <HStack>
         <Button

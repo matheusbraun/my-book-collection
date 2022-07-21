@@ -237,7 +237,7 @@ export const ListAll = () => {
                 ))}
               </Tbody>
             </Table>
-            <Pagination table={table} />
+            <Pagination table={table} numberOfRows={Number(data?.length)} />
           </>
         )}
       </Box>

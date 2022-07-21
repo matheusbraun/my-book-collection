@@ -12,6 +12,8 @@ import {
   Td,
   Box,
   Image as ChakraImage,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
 import type { Book, User } from '@prisma/client';
 import {
@@ -35,6 +37,7 @@ import Image from 'next/image';
 import LoadingSVG from '../../assets/images/loader.svg';
 import { shareColumns } from '../../utils/table/allBooksShareColumns';
 import { Pagination } from '../../components/Pagination';
+import { getTotalNumberOfVolumes } from '../../utils/getTotalNumberOfVolumes';
 
 const ShareBooksListPage = (props: { user: User }) => {
   const { data, isLoading } = trpc.useQuery([
@@ -67,9 +70,14 @@ const ShareBooksListPage = (props: { user: User }) => {
     <Layout userId={props.user.id}>
       <Box borderRadius={8} bg="gray.800" p="8" w="100%">
         <Flex mb="8" justify="space-between" align="center">
-          <Heading size="lg" fontWeight="400">
-            All books from {props.user.name}
-          </Heading>
+          <Stack>
+            <Heading size="lg" fontWeight="400">
+              All books from {props.user.name}
+            </Heading>
+            <Text fontSize="sm" color="gray.300">
+              {getTotalNumberOfVolumes(data)} volumes
+            </Text>
+          </Stack>
           <Flex
             as="label"
             flex="1"

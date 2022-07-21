@@ -14,6 +14,8 @@ import {
   Input,
   Image as ChakraImage,
   useToast,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import { RiAddLine, RiSearchLine, RiShareLine } from 'react-icons/ri';
@@ -37,6 +39,7 @@ import { isEven } from '../utils/isEven';
 import { DebounceInput } from 'react-debounce-input';
 import Link from 'next/link';
 import { Pagination } from './Pagination';
+import { getTotalNumberOfVolumes } from '../utils/getTotalNumberOfVolumes';
 
 export const ListAll = () => {
   const { data: session } = useSession();
@@ -109,20 +112,25 @@ export const ListAll = () => {
     <Layout>
       <Box borderRadius={8} bg="gray.800" p="8" w="100%">
         <Flex mb="8" justify="space-between" align="center">
-          <Heading size="lg" fontWeight="400">
-            All books
-            <Icon
-              as={RiShareLine}
-              color="pink.500"
-              fontSize="20"
-              ml="2"
-              title="Share"
-              _hover={{
-                cursor: 'pointer',
-              }}
-              onClick={onShareClick}
-            />
-          </Heading>
+          <Stack>
+            <Heading size="lg" fontWeight="400">
+              All books
+              <Icon
+                as={RiShareLine}
+                color="pink.500"
+                fontSize="20"
+                ml="2"
+                title="Share"
+                _hover={{
+                  cursor: 'pointer',
+                }}
+                onClick={onShareClick}
+              />
+            </Heading>
+            <Text fontSize="sm" color="gray.300">
+              {getTotalNumberOfVolumes(data)} volumes
+            </Text>
+          </Stack>
           <Flex
             as="label"
             flex="1"

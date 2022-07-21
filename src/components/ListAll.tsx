@@ -29,12 +29,14 @@ import {
   type SortingState,
   getSortedRowModel,
   getFilteredRowModel,
+  getPaginationRowModel,
 } from '@tanstack/react-table';
 import { Book } from '@prisma/client';
 import { columns } from '../utils/table/allBooksColumns';
 import { isEven } from '../utils/isEven';
 import { DebounceInput } from 'react-debounce-input';
 import Link from 'next/link';
+import { Pagination } from './Pagination';
 
 export const ListAll = () => {
   const { data: session } = useSession();
@@ -71,6 +73,7 @@ export const ListAll = () => {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   const setFilter = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -169,70 +172,73 @@ export const ListAll = () => {
             <ChakraImage as={Image} src={LoadingSVG} alt="Loading..." />
           </Flex>
         ) : (
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              {table.getHeaderGroups().map(headerGroup => {
-                return (
-                  <Tr key={headerGroup.id}>
-                    {headerGroup.headers.map((header, index) => (
-                      <Th key={header.id} w={index === 0 ? 'md' : '8'}>
-                        {header.isPlaceholder ? null : (
-                          <Flex
-                            columnGap="2"
-                            align="center"
-                            _hover={{
-                              cursor: header.column.getCanSort()
-                                ? 'pointer'
-                                : 'default',
-                            }}
-                            onClick={header.column.getToggleSortingHandler()}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                            {{
-                              asc: (
-                                <Icon
-                                  as={CgArrowUpR}
-                                  fontSize="17"
-                                  color="pink.500"
-                                />
-                              ),
-                              desc: (
-                                <Icon
-                                  as={CgArrowDownR}
-                                  fontSize="17"
-                                  color="pink.500"
-                                />
-                              ),
-                            }[header.column.getIsSorted() as string] ?? null}
-                          </Flex>
+          <>
+            <Table colorScheme="whiteAlpha">
+              <Thead>
+                {table.getHeaderGroups().map(headerGroup => {
+                  return (
+                    <Tr key={headerGroup.id}>
+                      {headerGroup.headers.map((header, index) => (
+                        <Th key={header.id} w={index === 0 ? 'md' : '8'}>
+                          {header.isPlaceholder ? null : (
+                            <Flex
+                              columnGap="2"
+                              align="center"
+                              _hover={{
+                                cursor: header.column.getCanSort()
+                                  ? 'pointer'
+                                  : 'default',
+                              }}
+                              onClick={header.column.getToggleSortingHandler()}
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                              {{
+                                asc: (
+                                  <Icon
+                                    as={CgArrowUpR}
+                                    fontSize="17"
+                                    color="pink.500"
+                                  />
+                                ),
+                                desc: (
+                                  <Icon
+                                    as={CgArrowDownR}
+                                    fontSize="17"
+                                    color="pink.500"
+                                  />
+                                ),
+                              }[header.column.getIsSorted() as string] ?? null}
+                            </Flex>
+                          )}
+                        </Th>
+                      ))}
+                    </Tr>
+                  );
+                })}
+              </Thead>
+              <Tbody>
+                {table.getRowModel().rows.map((row, index) => (
+                  <Tr key={row.id} bg={isEven(index) ? 'gray.900' : 'gray.800'}>
+                    {row.getVisibleCells().map((cell, index) => (
+                      <Td
+                        key={cell.id}
+                        textAlign={!isEven(index) ? 'center' : 'left'}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
                         )}
-                      </Th>
+                      </Td>
                     ))}
                   </Tr>
-                );
-              })}
-            </Thead>
-            <Tbody>
-              {table.getRowModel().rows.map((row, index) => (
-                <Tr key={row.id} bg={isEven(index) ? 'gray.900' : 'gray.800'}>
-                  {row.getVisibleCells().map((cell, index) => (
-                    <Td
-                      key={cell.id}
-                      textAlign={!isEven(index) ? 'center' : 'left'}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Td>
-                  ))}
-                </Tr>
-              ))}
-            </Tbody>
-          </Table>
+                ))}
+              </Tbody>
+            </Table>
+            <Pagination table={table} />
+          </>
         )}
       </Box>
     </Layout>

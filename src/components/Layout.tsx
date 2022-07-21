@@ -9,10 +9,10 @@ type LayoutProps = {
 };
 
 export const Layout = ({ children, userId }: LayoutProps) => (
-  <Flex direction="column" h="100vh">
+  <Flex direction="column" minHeight="100vh">
     <Header />
 
-    <Flex w="100%" my="6" maxW={1480} mx="auto" px="6">
+    <Flex w="100%" my="6" flex="1" maxW={1480} mx="auto" px="6">
       <Sidebar userId={userId} />
       {children}
     </Flex>

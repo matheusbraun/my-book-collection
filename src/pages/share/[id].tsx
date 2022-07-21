@@ -101,7 +101,7 @@ const ShareBooksListPage = (props: { user: User }) => {
         </Flex>
 
         {isLoading ? (
-          <Flex justify="center" align="center" pt="10">
+          <Flex justify="center" align="center" pt="60">
             <ChakraImage as={Image} src={LoadingSVG} alt="Loading..." />
           </Flex>
         ) : (

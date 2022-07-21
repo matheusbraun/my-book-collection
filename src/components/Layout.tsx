@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { Footer } from './Footer';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 
@@ -15,5 +16,7 @@ export const Layout = ({ children, userId }: LayoutProps) => (
       <Sidebar userId={userId} />
       {children}
     </Flex>
+
+    <Footer />
   </Flex>
 );

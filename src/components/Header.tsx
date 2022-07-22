@@ -1,10 +1,14 @@
-import { Flex, Text, Box, Avatar, Icon } from '@chakra-ui/react';
+import { Flex, Text, Box, Avatar, Icon, Button } from '@chakra-ui/react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { useRouter } from 'next/router';
+import { FaGoogle, FaSignOutAlt } from 'react-icons/fa';
 
 export const Header = () => {
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const isShareRoute = router.route.includes('share');
 
   return (
     <Flex
@@ -16,7 +20,7 @@ export const Header = () => {
       mt="4"
       px="6"
       align="center"
-      justify={!session ? 'flex-start' : 'space-between'}
+      justify={!session && !isShareRoute ? 'flex-start' : 'space-between'}
     >
       <Link href="/" title="Go to Home">
         <Text
@@ -61,6 +65,22 @@ export const Header = () => {
           </Flex>
         </Flex>
       )}
+      {!session && isShareRoute ? (
+        <Link href="/">
+          <Button
+            as="a"
+            size="sm"
+            fontSize="sm"
+            colorScheme="pink"
+            _hover={{
+              cursor: 'pointer',
+            }}
+            title="Go to sign in"
+          >
+            Sign In
+          </Button>
+        </Link>
+      ) : null}
     </Flex>
   );
 };

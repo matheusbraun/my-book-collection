@@ -1,4 +1,12 @@
-import { Button, Checkbox, Flex, Heading, Stack, Icon } from '@chakra-ui/react';
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Heading,
+  Stack,
+  Icon,
+  Text,
+} from '@chakra-ui/react';
 import { CategoryType } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { type SubmitHandler, useForm } from 'react-hook-form';
@@ -9,6 +17,8 @@ import { categoryOptions } from '../utils/selectOptions';
 import { trpc } from '../utils/trpc';
 import Image from 'next/image';
 import LoadingSVG from '../assets/images/button-loader.svg';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { schema } from '../utils/validation/schema';
 
 type FormInputs = {
   bookName: string;
@@ -25,7 +35,7 @@ const CreateBook = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({ resolver: zodResolver(schema) });
 
   const { mutate, isLoading } = trpc.useMutation(['book.create'], {
     onSuccess: () => {
@@ -68,6 +78,7 @@ const CreateBook = () => {
               label="Name"
               {...register('bookName')}
               isDisabled={isLoading}
+              errorMessage={errors.bookName && errors.bookName.message}
             />
             <Select
               label="Category"
@@ -79,8 +90,9 @@ const CreateBook = () => {
               label="Volumes"
               type="number"
               w={140}
-              {...register('volumes')}
+              {...register('volumes', { valueAsNumber: true })}
               isDisabled={isLoading}
+              errorMessage={errors.volumes && errors.volumes.message}
             />
           </Stack>
 

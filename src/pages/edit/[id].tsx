@@ -11,6 +11,8 @@ import { categoryOptions } from '../../utils/selectOptions';
 import { trpc } from '../../utils/trpc';
 import Image from 'next/image';
 import LoadingSVG from '../../assets/images/button-loader.svg';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { schema } from '../../utils/validation/schema';
 
 type FormInputs = {
   bookName: string;
@@ -33,6 +35,7 @@ const EditBook = (props: { book: Book }) => {
       completed: props.book.isCompleted,
       volumes: String(props.book.numberOfVolumes),
     },
+    resolver: zodResolver(schema),
   });
 
   const { mutate, isLoading } = trpc.useMutation(['book.update'], {
@@ -76,6 +79,7 @@ const EditBook = (props: { book: Book }) => {
               label="Name"
               {...register('bookName')}
               isDisabled={isLoading}
+              errorMessage={errors.bookName && errors.bookName.message}
             />
             <Select
               label="Category"
@@ -87,8 +91,9 @@ const EditBook = (props: { book: Book }) => {
               label="Volumes"
               type="number"
               w={140}
-              {...register('volumes')}
+              {...register('volumes', { valueAsNumber: true })}
               isDisabled={isLoading}
+              errorMessage={errors.volumes && errors.volumes.message}
             />
           </Stack>
 

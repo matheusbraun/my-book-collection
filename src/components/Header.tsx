@@ -2,7 +2,7 @@ import { Flex, Text, Box, Avatar, Icon, Button } from '@chakra-ui/react';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FaGoogle, FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 
 export const Header = () => {
   const { data: session } = useSession();

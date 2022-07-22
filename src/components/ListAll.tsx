@@ -159,7 +159,7 @@ export const ListAll = () => {
             />
             <Icon as={RiSearchLine} fontSize="20" />
           </Flex>
-          <Link href="/create" title="Add new book">
+          <Link href="/create">
             <Button
               as="a"
               size="sm"
@@ -169,6 +169,7 @@ export const ListAll = () => {
               _hover={{
                 cursor: 'pointer',
               }}
+              title="Add new book"
             >
               Add new
             </Button>

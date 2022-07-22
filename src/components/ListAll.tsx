@@ -114,7 +114,7 @@ export const ListAll = () => {
         <Flex mb="8" justify="space-between" align="center">
           <Stack>
             <Heading size="lg" fontWeight="400">
-              All books
+              Books
               <Icon
                 as={RiShareLine}
                 color="pink.500"

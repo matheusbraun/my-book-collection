@@ -72,7 +72,7 @@ const ShareBooksListPage = (props: { user: User }) => {
         <Flex mb="8" justify="space-between" align="center">
           <Stack>
             <Heading size="lg" fontWeight="400">
-              All books from {props.user.name}
+              Books from {props.user.name}
             </Heading>
             <Text fontSize="sm" color="gray.300">
               {getTotalNumberOfVolumes(data)} volumes

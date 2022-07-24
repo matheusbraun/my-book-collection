@@ -5,7 +5,7 @@ import {
   Heading,
   Stack,
   Icon,
-  Text,
+  useToast,
 } from '@chakra-ui/react';
 import { CategoryType } from '@prisma/client';
 import { useSession } from 'next-auth/react';
@@ -29,6 +29,7 @@ type FormInputs = {
 
 const CreateBook = () => {
   const { data: session } = useSession();
+  const toast = useToast();
 
   const {
     register,
@@ -40,6 +41,23 @@ const CreateBook = () => {
   const { mutate, isLoading } = trpc.useMutation(['book.create'], {
     onSuccess: () => {
       reset();
+      toast({
+        description: 'Book successfuly created.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+    },
+    onError: () => {
+      toast({
+        title: 'Something went wrong.',
+        description: 'Book was not created. Please try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
     },
   });
 

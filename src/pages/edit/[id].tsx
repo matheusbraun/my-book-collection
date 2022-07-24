@@ -1,4 +1,12 @@
-import { Button, Checkbox, Flex, Heading, Icon, Stack } from '@chakra-ui/react';
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Heading,
+  Icon,
+  Stack,
+  useToast,
+} from '@chakra-ui/react';
 import type { Book, CategoryType } from '@prisma/client';
 import type { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
@@ -23,6 +31,7 @@ type FormInputs = {
 
 const EditBook = (props: { book: Book }) => {
   const router = useRouter();
+  const toast = useToast();
 
   const {
     register,
@@ -40,7 +49,24 @@ const EditBook = (props: { book: Book }) => {
 
   const { mutate, isLoading } = trpc.useMutation(['book.update'], {
     onSuccess: () => {
+      toast({
+        description: 'Book successfuly updated.',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
       router.back();
+    },
+    onError: () => {
+      toast({
+        title: 'Something went wrong.',
+        description: 'Book was not updated. Please try again.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
     },
   });
 

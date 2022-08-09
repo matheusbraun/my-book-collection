@@ -29,6 +29,8 @@ type FormInputs = {
   completed: boolean;
 };
 
+type Category = typeof CategoryType[keyof typeof CategoryType];
+
 const EditBook = (props: { book: Book }) => {
   const router = useRouter();
   const toast = useToast();
@@ -37,11 +39,12 @@ const EditBook = (props: { book: Book }) => {
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm<FormInputs>({
     defaultValues: {
       bookName: props.book.name,
       category: props.book.category,
-      completed: props.book.isCompleted,
+      completed: Boolean(props.book.isCompleted),
       volumes: String(props.book.numberOfVolumes),
     },
     resolver: zodResolver(schema),
@@ -70,11 +73,12 @@ const EditBook = (props: { book: Book }) => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormInputs> = async data => {
+  const onSubmit: SubmitHandler<FormInputs> = async () => {
+    const data = getValues();
     await mutate({
       id: props.book.id,
       name: data.bookName,
-      category: data.category as typeof CategoryType[keyof typeof CategoryType],
+      category: data.category as Category,
       isCompleted: Boolean(data.completed),
       numberOfVolumes: Number(data.volumes),
     });
@@ -127,8 +131,8 @@ const EditBook = (props: { book: Book }) => {
             mt="4"
             colorScheme="pink"
             size="lg"
-            {...register('completed')}
             isDisabled={isLoading}
+            {...register('completed')}
           >
             Completed
           </Checkbox>
@@ -140,7 +144,7 @@ const EditBook = (props: { book: Book }) => {
             isDisabled={isLoading}
           >
             {isLoading ? (
-              <Icon as={Image} src={LoadingSVG} alt="Adding book..." />
+              <Icon as={Image} src={LoadingSVG} alt="Updating book..." />
             ) : (
               'Update'
             )}
@@ -176,7 +180,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     };
   }
 
-  return { props: { book: bookInfo }, revalidate: 60 };
+  return { props: { book: bookInfo }, revalidate: 60 * 60 * 24 };
 };
 
 export async function getStaticPaths() {

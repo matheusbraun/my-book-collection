@@ -20,10 +20,10 @@ enum CategoryType {
 }
 
 model Book {
-    id              String       @id @default(cuid())
-    userId          String
+    id              String @db.VarChar(255)       @id @default(cuid())
+    userId          String @db.VarChar(255)
     category        CategoryType
-    name            String       @unique
+    name            String @db.VarChar(255)       @unique
     numberOfVolumes Int
     isCompleted     Boolean
     createdAt       DateTime     @default(now())
@@ -34,45 +34,45 @@ model Book {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String?
-    access_token      String?
+    id                String @db.VarChar(255)  @id @default(cuid())
+    userId            String @db.VarChar(255)
+    type              String @db.VarChar(255)
+    provider          String @db.VarChar(255)
+    providerAccountId String @db.VarChar(255)
+    refresh_token     String? @db.VarChar(255)
+    access_token      String? @db.VarChar(255)
     expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
+    token_type        String? @db.VarChar(255)
+    scope             String? @db.VarChar(255)
+    id_token          String? @db.VarChar(255)
+    session_state     String? @db.VarChar(255)
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
+    id           String @db.VarChar(255)   @id @default(cuid())
+    sessionToken String @db.VarChar(255)   @unique
+    userId       String @db.VarChar(255)
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
+    id            String   @db.VarChar(255)  @id @default(cuid())
+    name          String? @db.VarChar(255)
+    email         String? @db.VarChar(255)   @unique
     emailVerified DateTime?
-    image         String?
+    image         String? @db.VarChar(255)
     accounts      Account[]
     sessions      Session[]
     books         Book[]
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
+    identifier String @db.VarChar(255)
+    token      String @db.VarChar(255)   @unique
     expires    DateTime
 
     @@unique([identifier, token])
